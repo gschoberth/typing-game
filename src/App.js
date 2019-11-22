@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -16,11 +16,25 @@ import './App.css';
  */
 
 function App() {
+
+  const[userInput,setUserInput] = useState("")
+
+ 
+
+  function handleChange(event){
+    const {value} = event.target
+    setUserInput(value)
+  }
+
   return(
     <div>
       <h1>Typing Game</h1>
       
-      <textarea />
+      <textarea 
+        name="userInput"
+        onChange={handleChange}
+        value={userInput}
+      />
 
       <h4>Time Remaining: ??</h4>
       <button>Start Challenge</button>
