@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect,useRef} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -24,6 +24,8 @@ function App() {
   const [timer, setTimer] = useState(START_TIME)
   const [isRunning, setIsRunning] = useState(false)
 
+  const textRef = useRef(null)
+
   function handleChange(event){
     const {value} = event.target
     setText(value)
@@ -32,7 +34,9 @@ function App() {
   function initializeGame(){
     setIsRunning(true)
     setTimer(START_TIME)
-    setText("")    
+    setText("") 
+    textRef.current.disabled = false   
+    textRef.current.focus()
   }
 
   function endGame(){
@@ -66,6 +70,7 @@ function App() {
         onChange={handleChange}
         disabled={!isRunning}
         value={userInput}
+        ref={textRef}
       />
 
       <h4>Time Remaining: {timer}</h4>
