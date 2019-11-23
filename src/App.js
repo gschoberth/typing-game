@@ -17,13 +17,31 @@ import './App.css';
 
 function App() {
 
-  const[userInput,setUserInput] = useState("")
+  const [userInput,setText] = useState("")
+  const [wordCount,setWordCount] = useState(0)
+  const [timer, setTimer] = useState(5)
+  const [isRunning, setIsRunning] = useState(false)
 
- 
+  useEffect(() =>{
+    if(isRunning && timer > 0){
+      setTimeout(() =>{
+        console.log(timer)
+        setTimer(prevState => prevState - 1)
+      }, 1000)
+    } else{
+      setIsRunning(false)
+    }
+  },[isRunning,timer])
 
   function handleChange(event){
     const {value} = event.target
-    setUserInput(value)
+    setText(value)
+  }
+
+  //World's longest string operation
+  //Trim out the whitespace, split on the whitespace, filter out any remaining whitespace and return the number of elements of the array.
+  function wordCounter(text){
+    return text.trim().split(" ").filter(str => str !== "").length
   }
 
   return(
@@ -33,12 +51,13 @@ function App() {
       <textarea 
         name="userInput"
         onChange={handleChange}
+        
         value={userInput}
       />
 
-      <h4>Time Remaining: ??</h4>
-      <button>Start Challenge</button>
-      <h1>Total Word Count</h1>
+      <h4>Time Remaining: {timer}</h4>
+      <button onClick={() => setIsRunning(true)}>Start Challenge</button>
+      <h1>Total Word Count:{wordCount}</h1>
     </div>
   )
 }
