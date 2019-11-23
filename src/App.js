@@ -17,10 +17,28 @@ import './App.css';
 
 function App() {
 
+  const START_TIME = 5
+
   const [userInput,setText] = useState("")
   const [wordCount,setWordCount] = useState(0)
-  const [timer, setTimer] = useState(5)
+  const [timer, setTimer] = useState(START_TIME)
   const [isRunning, setIsRunning] = useState(false)
+
+  function handleChange(event){
+    const {value} = event.target
+    setText(value)
+  }
+
+  function initializeGame(){
+    setIsRunning(true)
+    setTimer(START_TIME)
+    setText("")    
+  }
+
+  function endGame(){
+    setWordCount(wordCounter(userInput))
+    setIsRunning(false)
+  }
 
   useEffect(() =>{
     if(isRunning && timer > 0){
@@ -29,14 +47,9 @@ function App() {
         setTimer(prevState => prevState - 1)
       }, 1000)
     } else{
-      setIsRunning(false)
+      endGame()
     }
   },[isRunning,timer])
-
-  function handleChange(event){
-    const {value} = event.target
-    setText(value)
-  }
 
   //World's longest string operation
   //Trim out the whitespace, split on the whitespace, filter out any remaining whitespace and return the number of elements of the array.
@@ -51,12 +64,15 @@ function App() {
       <textarea 
         name="userInput"
         onChange={handleChange}
-        
+        disabled={!isRunning}
         value={userInput}
       />
 
       <h4>Time Remaining: {timer}</h4>
-      <button onClick={() => setIsRunning(true)}>Start Challenge</button>
+      <button 
+        onClick={initializeGame} 
+        disabled={isRunning}>Start Challenge
+      </button>
       <h1>Total Word Count:{wordCount}</h1>
     </div>
   )
